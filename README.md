@@ -1,4 +1,6 @@
-![Game Play](assets/game_play.gif)
+<p align="center">
+  <img alt="game play" src="assets/game_play.gif" width="84%" />
+</p>
 
 # Space Invader Game
 
