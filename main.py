@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+import os
 
 from pygame import mixer
 
@@ -11,16 +12,16 @@ pygame.init()
 screenX = 800
 screenY = 600
 screen = pygame.display.set_mode((screenX, screenY))
-background = pygame.image.load('assets/background.png')
-mixer.music.load('assets/background.wav')
+background = pygame.image.load(os.path.join('assets', 'background.png'))
+mixer.music.load(os.path.join('assets', 'background.wav'))
 mixer.music.play(-1)
 
 # title & icon
 pygame.display.set_caption("Space Invaders")
-pygame.display.set_icon(pygame.image.load('assets/ufo.png'))
+pygame.display.set_icon(pygame.image.load(os.path.join('assets', 'ufo.png')))
 
 # player
-playerImg = pygame.image.load('assets/player.png')
+playerImg = pygame.image.load(os.path.join('assets', 'player.png'))
 playerX = 370
 playerY = 480
 playerX_change = 0
@@ -36,14 +37,14 @@ enemyX_change_idx = 0.8
 enemyY_change_idx = 0.1
 
 for i in range(num_of_enemies):
-    enemyImg.append(pygame.image.load('assets/enemy.png'))
+    enemyImg.append(pygame.image.load(os.path.join('assets', 'enemy.png')))
     enemyX.append(random.randint(20, screenX - 20 - 64))
     enemyY.append(random.randint(50, 150))
     enemyX_change.append(enemyX_change_idx)
     enemyY_change.append(0)
 
 # bullet
-bulletImg = pygame.image.load('assets/bullet.png')
+bulletImg = pygame.image.load(os.path.join('assets', 'bullet.png'))
 bulletX = playerX + 32
 bulletY = playerY
 bulletX_change = 0
@@ -118,7 +119,8 @@ while running:
                 playerY += 5
             if event.key == pygame.K_SPACE:
                 if bullet_state == 'ready':
-                    bullet_sound = mixer.Sound('assets/laser.wav')
+                    bullet_sound = mixer.Sound(
+                        os.path.join('assets', 'laser.wav'))
                     bullet_sound.play()
                     # bulletY = playerY
                     bulletX = playerX
@@ -168,7 +170,8 @@ while running:
             score_val += 1
             print(score_val)
             # explosion sound
-            explosion_sound = mixer.Sound('assets/explosion.wav')
+            explosion_sound = mixer.Sound(
+                os.path.join('assets', 'explosion.wav'))
             explosion_sound.play()
 
             # increase enemy speed
@@ -185,7 +188,6 @@ while running:
     if bullet_state == 'fire':
         fire(bulletX, bulletY)
         bulletY -= bulletY_change
-
 
     player(playerX, playerY)
     show_score(textX, textY)
