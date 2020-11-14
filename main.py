@@ -8,6 +8,10 @@ from pygame import mixer
 # initialize the pygame
 pygame.init()
 
+# game timing
+FPS = 60
+clock = pygame.time.Clock()
+
 # create the screen
 screenX = 800
 screenY = 600
@@ -33,8 +37,8 @@ enemyY = []
 enemyX_change = []
 enemyY_change = []
 num_of_enemies = 6
-enemyX_change_idx = 0.8
-enemyY_change_idx = 0.1
+enemyX_change_idx = 2.0
+enemyY_change_idx = 0.3
 
 for i in range(num_of_enemies):
     enemyImg.append(pygame.image.load(os.path.join('assets', 'enemy.png')))
@@ -48,7 +52,7 @@ bulletImg = pygame.image.load(os.path.join('assets', 'bullet.png'))
 bulletX = playerX + 32
 bulletY = playerY
 bulletX_change = 0
-bulletY_change = 15
+bulletY_change = 25
 bullet_state = 'ready'
 
 # score
@@ -101,6 +105,8 @@ def game_over_text():
 # game loop
 running = True
 while running:
+    clock.tick(FPS)
+
     screen.fill((0, 0, 0))
     # background image
     screen.blit(background, (0, 0))
@@ -131,7 +137,7 @@ while running:
                 playerX_change = 0
 
     # player position change
-    playerX += playerX_change * 5
+    playerX += playerX_change * 10
 
     if playerX <= 0:
         playerX = 0
@@ -175,8 +181,9 @@ while running:
             explosion_sound.play()
 
             # increase enemy speed
-            enemyX_change_idx *= 1.1
-            enemyY_change_idx *= 1.05
+            if score_val < 18:
+                enemyX_change_idx *= 1.1
+                enemyY_change_idx *= 1.05
 
         enemy(enemyX[i], enemyY[i], i)
 
