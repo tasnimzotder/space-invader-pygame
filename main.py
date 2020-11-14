@@ -2,6 +2,8 @@ import pygame
 import random
 import math
 
+from pygame import mixer
+
 # initialize the pygame
 pygame.init()
 
@@ -10,6 +12,8 @@ screenX = 800
 screenY = 600
 screen = pygame.display.set_mode((screenX, screenY))
 background = pygame.image.load('assets/background.png')
+mixer.music.load('assets/background.wav')
+mixer.music.play(-1)
 
 # title & icon
 pygame.display.set_caption("Space Invaders")
@@ -29,6 +33,7 @@ enemyX_change = []
 enemyY_change = []
 num_of_enemies = 6
 enemyX_change_idx = 0.8
+enemyY_change_idx = 0.1
 
 for i in range(num_of_enemies):
     enemyImg.append(pygame.image.load('assets/enemy.png'))
@@ -45,7 +50,17 @@ bulletX_change = 0
 bulletY_change = 15
 bullet_state = 'ready'
 
-score = 0
+# score
+score_val = 0
+font = pygame.font.Font('fonts/Audiowide-Regular.ttf', 32)
+
+textX = 10
+textY = 10
+
+
+def show_score(x, y):
+    score = font.render("Score:" + str(score_val), True, (255, 255, 255))
+    screen.blit(score, (x, y))
 
 
 def player(x, y):
@@ -62,11 +77,24 @@ def fire(x, y):
     screen.blit(bulletImg, (x + 16, y - 10))
 
 
-def isCollosion(x1, y1, x2, y2):
+def is_collision(x1, y1, x2, y2):
     distance = math.sqrt(math.pow((x2 - x1), 2) + math.pow((y2 - y1), 2))
     if distance < 30:
         return True
     return False
+
+
+# game over
+over_font = pygame.font.Font('fonts/Audiowide-Regular.ttf', 64)
+
+
+def game_over_text():
+    global textY
+    textY = -90
+    over_text = over_font.render('GAME OVER', True, (255, 255, 255))
+    screen.blit(over_text, (200, 230))
+    score_text = font.render("Score:" + str(score_val), True, (255, 255, 255))
+    screen.blit(score_text, (345, 296))
 
 
 # game loop
@@ -90,9 +118,12 @@ while running:
                 playerY += 5
             if event.key == pygame.K_SPACE:
                 if bullet_state == 'ready':
+                    bullet_sound = mixer.Sound('assets/laser.wav')
+                    bullet_sound.play()
                     # bulletY = playerY
                     bulletX = playerX
                     fire(playerX, bulletY)
+
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0
@@ -111,8 +142,16 @@ while running:
 
     # enemy position change
     for i in range(num_of_enemies):
+        # game over
+        if enemyY[i] >= playerY - 70:
+            for j in range(num_of_enemies):
+                enemyY[j] = 2020
+
+            game_over_text()
+            break
+
         enemyX[i] += enemyX_change[i]
-        enemyY[i] += 0.1
+        enemyY[i] += enemyY_change_idx
 
         if enemyX[i] <= 20:
             enemyX_change[i] = enemyX_change_idx
@@ -120,14 +159,21 @@ while running:
             enemyX_change[i] = -enemyX_change_idx
 
         # collision
-        bulletCollision = isCollosion(enemyX[i], enemyY[i], bulletX, bulletY)
+        bulletCollision = is_collision(enemyX[i], enemyY[i], bulletX, bulletY)
         if bulletCollision is True:
             bulletY = playerY
             bullet_state = 'ready'
             enemyX[i] = random.randint(20, screenX - 20 - 64)
             enemyY[i] = random.randint(50, 150)
-            score += 1
-            print(score)
+            score_val += 1
+            print(score_val)
+            # explosion sound
+            explosion_sound = mixer.Sound('assets/explosion.wav')
+            explosion_sound.play()
+
+            # increase enemy speed
+            enemyX_change_idx *= 1.1
+            enemyY_change_idx *= 1.05
 
         enemy(enemyX[i], enemyY[i], i)
 
@@ -136,17 +182,11 @@ while running:
         bullet_state = "ready"
         bulletY = playerY
 
-    if bullet_state is 'fire':
+    if bullet_state == 'fire':
         fire(bulletX, bulletY)
         bulletY -= bulletY_change
 
-    if enemyY[i] >= playerY - 60:
-        # enemy(random.randint(20, screenX - 20 - 64), random.randint(50, 150))
-        score = 0
-        print(score)
-
-    if score >= 10:
-        enemyX_change_idx *= 2
 
     player(playerX, playerY)
+    show_score(textX, textY)
     pygame.display.update()
