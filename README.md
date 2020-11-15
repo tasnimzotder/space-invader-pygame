@@ -8,11 +8,11 @@
     <img alt="GitHub" src="https://img.shields.io/github/license/tasnimzotder/space-invader-pygame?style=flat-square">
 </p>
 
-# Space Invader Game
+# 🎮 Space Invader Game
 
 A python powered game
 
-## Setup & Getting Started
+## 🎉 Setup & Getting Started
 
 1. Clone
 
@@ -40,6 +40,14 @@ cmd /c "venv\Scripts\activate && python main.py"
 source venv/bin/activate && python3 main.py
 ```
 
-## References
+## ✨ Features
+
+- Score counter
+- Highscore counter
+- Data store in local file system
+- (~) Easy to play
+- Awesome sound effects
+
+## 📃 References
 
 - [FreeCodeCamp Tutorial](https://youtu.be/FfWpgLFMI7w)
