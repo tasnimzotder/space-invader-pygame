@@ -30,7 +30,7 @@ cmd /c "py -m pip install virtualenv && py -m venv venv"
 .\venv\Scripts\activate
 ```
 
-3. Install the dependencies & start game
+4. Install the dependencies & start game
 
 ```bash
 cmd /c "pip install -r requirements.txt && python main.py"

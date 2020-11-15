@@ -10,6 +10,10 @@ from pygame import mixer
 # initialize the pygame
 pygame.init()
 
+# game loop
+running = False
+setup_running = True
+
 # game timing
 FPS = 60
 clock = pygame.time.Clock()
@@ -37,23 +41,6 @@ playerY = 480
 playerX_change = 0
 player_name = ''
 
-# enemy
-enemyImg = []
-enemyX = []
-enemyY = []
-enemyX_change = []
-enemyY_change = []
-num_of_enemies = 6
-enemyX_change_idx = 2.0
-enemyY_change_idx = 0.3
-
-for i in range(num_of_enemies):
-    enemyImg.append(pygame.image.load(os.path.join('assets', 'enemy.png')))
-    enemyX.append(random.randint(20, screenX - 20 - 64))
-    enemyY.append(random.randint(50, 150))
-    enemyX_change.append(enemyX_change_idx)
-    enemyY_change.append(0)
-
 # bullet
 bulletImg = pygame.image.load(os.path.join('assets', 'bullet.png'))
 bulletX = playerX + 32
@@ -79,10 +66,6 @@ def player(x: float, y: float):
     screen.blit(playerImg, (x, y))
 
 
-def enemy(x: float, y: float, idx: float):
-    screen.blit(enemyImg[idx], (x, y))
-
-
 def fire(x: float, y: float):
     global bullet_state
     bullet_state = 'fire'
@@ -96,14 +79,37 @@ def is_collision(x1: float, y1: float, x2: float, y2: float):
     return False
 
 
+# reload game
+def reload_game(event):
+    global textX, textY
+    global score_val
+
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_F5:
+            # set score diplay default
+            textX = 10
+            textY = 10
+
+            score_val = 0
+            main()
+
+
 # quit window
 def quit_window(event, var_name: str, value: bool):
+    global score_val, running, setup_running
+
     if event.type == pygame.QUIT:
-        var_name = value
+        if var_name == 'running':
+            running = value
+        elif var_name == 'setup_running':
+            setup_running = value
         sys.exit()
     elif event.type == pygame.KEYDOWN:
         if event.key == pygame.K_ESCAPE:
-            var_name = value
+            if var_name == 'running':
+                running = value
+            elif var_name == 'setup_running':
+                setup_running = value
             sys.exit()
 
 
@@ -116,20 +122,23 @@ def game_over_text():
     textY = -90
 
     scoresFile = sh.readScoresFile()
-    if scoresFile['highscore']['score'] <= score_val:
+    if score_val > scoresFile['highscore']['score']:
         sh.writeScoresFile(player_name, score_val)
 
     over_text = over_font.render('GAME OVER', True, (255, 255, 255))
-    screen.blit(over_text, (200, 200))
+    screen.blit(over_text, (180, 160))
 
     score_text = font.render("Score: " + str(score_val) + "\t\t" + player_name,
                              True, (255, 255, 255))
-    screen.blit(score_text, (305, 286))
+    screen.blit(score_text, (285, 246))
 
     highscore_text = font.render(
         "Highscore: " + str(scoresFile['highscore']['score']) + "\t\t" +
         scoresFile['highscore']['player'], True, (255, 255, 255))
-    screen.blit(highscore_text, (232, 325))
+    screen.blit(highscore_text, (212, 285))
+
+    reload_text = font.render('* Press F5 to reload *', True, (240, 95, 38))
+    screen.blit(reload_text, (220, 450))
 
 
 # game setup window
@@ -144,7 +153,6 @@ def get_user_details(message: str):
 def main():
     global playerX, playerY
     global playerX_change
-    global enemyX_change_idx, enemyY_change_idx
     global bulletX, bulletY
     global bullet_state
     global score_val
@@ -152,8 +160,27 @@ def main():
     global fps_count, blink_cursor
 
     # game loop
-    running = False
-    setup_running = True
+    global running, setup_running
+
+    # enemy
+    enemyImg = []
+    enemyX = []
+    enemyY = []
+    enemyX_change = []
+    enemyY_change = []
+    num_of_enemies = 6
+    enemyX_change_idx = 2.0
+    enemyY_change_idx = 0.3
+
+    for i in range(num_of_enemies):
+        enemyImg.append(pygame.image.load(os.path.join('assets', 'enemy.png')))
+        enemyX.append(random.randint(20, screenX - 20 - 64))
+        enemyY.append(random.randint(50, 150))
+        enemyX_change.append(enemyX_change_idx)
+        enemyY_change.append(0)
+
+    def enemy(x: float, y: float, idx: float):
+        screen.blit(enemyImg[idx], (x, y))
 
     # game setup window
     while setup_running:
@@ -199,6 +226,7 @@ def main():
 
         for event in pygame.event.get():
             quit_window(event, running, False)
+            reload_game(event)
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
