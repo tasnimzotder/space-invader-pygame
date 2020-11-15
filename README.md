@@ -2,6 +2,12 @@
   <img alt="game play" src="assets/game_play.gif" width="84%" />
 </p>
 
+<p align="center">
+    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/tasnimzotder/space-invader-pygame?style=flat-square">
+    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/tasnimzotder/space-invader-pygame?style=flat-square">
+    <img alt="GitHub" src="https://img.shields.io/github/license/tasnimzotder/space-invader-pygame?style=flat-square">
+</p>
+
 # Space Invader Game
 
 A python powered game

@@ -185,6 +185,7 @@ while running:
                 enemyX_change_idx *= 1.1
                 enemyY_change_idx *= 1.05
 
+        # display enemy
         enemy(enemyX[i], enemyY[i], i)
 
     # bullet movement
