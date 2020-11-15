@@ -20,24 +20,20 @@ A python powered game
 git clone https://github.com/tasnimzotder/space-invader-pygame.git
 ```
 
-2. Install the dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-3. Start the game
-
-- On Windows
-
+2. Install virtualenv, create & activate 
 ```powershell
-cmd /c "venv\Scripts\activate && python main.py"
+cmd /c "py -m pip install virtualenv && py -m venv venv"
 ```
 
-- On Mac
+3. Activate the environment
+```powershell
+.\venv\Scripts\activate
+```
+
+3. Install the dependencies & start game
 
 ```bash
-source venv/bin/activate && python3 main.py
+cmd /c "pip install -r requirements.txt && python main.py"
 ```
 
 ## ✨ Features
