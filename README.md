@@ -50,4 +50,10 @@ source venv/bin/activate && python3 main.py
 
 ## 📃 References
 
-- [FreeCodeCamp Tutorial](https://youtu.be/FfWpgLFMI7w)
+- **Core Concepts**: [FreeCodeCamp Tutorial](https://youtu.be/FfWpgLFMI7w)
+- **Background Music**: [Stranger Things | Netflix](https://youtu.be/Jmv5pTyz--I) - [Original](https://youtu.be/-RcPZdihrp4)
+- **Explosion Sound**: [Free Sound Effects](https://www.freesoundeffects.com/free-track/explosion-1-466446/)
+
+## 📝 License
+
+This project is licensed usder the [MIT License](LICENSE)
