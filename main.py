@@ -165,7 +165,6 @@ def main():
         else:
             fps_count = 0
 
-        # if fps_count // 10 == 0 or fps_count // 10 == 1 or fps_count // 10 == 2:
         if fps_count // 10 in [0, 1, 2]:
             blink_cursor = '|'
         else:
@@ -184,7 +183,8 @@ def main():
                 elif event.key == pygame.K_BACKSPACE:
                     player_name = player_name[:-1]
                 else:
-                    player_name += event.unicode
+                    if len(player_name) <= 12:
+                        player_name += event.unicode
 
         get_user_details('Player Name')
         pygame.display.update()
