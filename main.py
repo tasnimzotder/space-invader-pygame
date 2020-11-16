@@ -32,7 +32,7 @@ mixer.music.play(-1)
 
 # title & icon
 pygame.display.set_caption("Space Invaders")
-pygame.display.set_icon(pygame.image.load(os.path.join('assets', 'ufo.png')))
+pygame.display.set_icon(pygame.image.load(os.path.join('assets', 'enemy.png')))
 
 # player
 playerImg = pygame.image.load(os.path.join('assets', 'player.png'))
@@ -229,13 +229,13 @@ def main():
             reload_game(event)
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key in [pygame.K_LEFT, pygame.K_a]:
                     playerX_change = -1
-                elif event.key == pygame.K_RIGHT:
+                elif event.key in [pygame.K_RIGHT, pygame.K_d]:
                     playerX_change = 1
-                elif event.key == pygame.K_UP:
+                elif event.key in [pygame.K_UP, pygame.K_w]:
                     playerY += -5
-                elif event.key == pygame.K_DOWN:
+                elif event.key in [pygame.K_DOWN, pygame.K_s]:
                     playerY += 5
                 if event.key == pygame.K_SPACE:
                     if bullet_state == 'ready':
@@ -247,7 +247,9 @@ def main():
                         fire(playerX, bulletY)
 
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                if event.key in [
+                        pygame.K_LEFT, pygame.K_RIGHT, pygame.K_a, pygame.K_d
+                ]:
                     playerX_change = 0
 
         # player position change
@@ -289,14 +291,14 @@ def main():
                 enemyX[i] = random.randint(20, screenX - 20 - 64)
                 enemyY[i] = random.randint(50, 150)
                 score_val += 1
-                print(score_val)
+                print('Score: {0}'.format(score_val))
                 # explosion sound
                 explosion_sound = mixer.Sound(
                     os.path.join('assets', 'explosion.wav'))
                 explosion_sound.play()
 
                 # increase enemy speed
-                if score_val < 18:
+                if score_val < 13:
                     enemyX_change_idx *= 1.1
                     enemyY_change_idx *= 1.05
 

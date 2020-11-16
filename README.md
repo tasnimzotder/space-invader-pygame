@@ -5,6 +5,7 @@
 <p align="center">
     <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/tasnimzotder/space-invader-pygame?style=flat-square">
     <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/tasnimzotder/space-invader-pygame?style=flat-square">
+    <img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/tasnimzotder/space-invader-pygame?include_prereleases&style=flat-square">
     <img alt="GitHub" src="https://img.shields.io/github/license/tasnimzotder/space-invader-pygame?style=flat-square">
 </p>
 
@@ -20,12 +21,14 @@ A python powered game
 git clone https://github.com/tasnimzotder/space-invader-pygame.git
 ```
 
-2. Install virtualenv, create & activate 
+2. Install virtualenv, create & activate
+
 ```powershell
 cmd /c "py -m pip install virtualenv && py -m venv venv"
 ```
 
 3. Activate the environment
+
 ```powershell
 .\venv\Scripts\activate
 ```
